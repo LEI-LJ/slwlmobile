@@ -1,15 +1,15 @@
 <script setup>
   import { ref, reactive } from 'vue'
-
+  import { onLoad } from '@dcloudio/uni-app'
   import slPickup from './components/pickup.vue'
   import slDelivery from './components/delivery.vue'
   import slComplete from './components/complete.vue'
   import { accountLogin } from '@/apis/user.js'
-  const login = async () => {
+  onLoad(async () => {
     const res = await accountLogin({ account: 'xbsj001', password: '123456' })
     console.log(res)
-  }
-  login()
+  })
+
   // 标签页索引
   const tabIndex = ref(0)
   const tabMetas = reactive([

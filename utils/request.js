@@ -11,7 +11,13 @@ export const axios = createUniFetch({
     },
     // 响应拦截器
     response(result) {
-      return result
+      if (result.data.code === 200) {
+        uni.utils.toast('数据请求成功', 'success')
+        return result.data
+      } else {
+        uni.utils.toast()
+        return result
+      }
     },
   },
 })

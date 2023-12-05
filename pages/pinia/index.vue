@@ -1,9 +1,16 @@
-<script setup></script>
+<script setup>
+  import { useCounterStore } from '@/store/counter.js'
+  const counter = useCounterStore()
+</script>
 <template>
   <view class="counter">
-    <button class="button" type="primary">-</button>
-    <input class="input" type="text" />
-    <button class="button" type="primary">+</button>
+    <button @click="counter.subNumber()" class="button" type="primary">
+      -
+    </button>
+    <input class="input" type="text" :value="counter.number" />
+    <button @click="counter.addNumber()" class="button" type="primary">
+      +
+    </button>
   </view>
 </template>
 
