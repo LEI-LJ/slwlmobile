@@ -2,27 +2,16 @@ import App from './App'
 import '@/utils/utils.js'
 // 导入pinia
 import { createPinia } from 'pinia'
-
-// #ifndef VUE3
-import Vue from 'vue'
-import './uni.promisify.adaptor'
-Vue.config.productionTip = false
-
-App.mpType = 'app'
-const app = new Vue({
-  ...App,
-})
-app.$mount()
-// #endif
-
-// #ifdef VUE3
+// import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { persistedstate } from '@/store/persite.js'
 import { createSSRApp } from 'vue'
-const pinia = createPinia()
+
 export function createApp() {
+  const pinia = createPinia()
   const app = createSSRApp(App)
+  pinia.use(persistedstate)
   app.use(pinia)
   return {
     app,
   }
 }
-// #endif
