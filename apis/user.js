@@ -1,6 +1,10 @@
 import { axios } from '@/utils/request.js'
 // debugger
 export const accountLogin = (data) => {
+  // console.log(data.account,data.);
+  if (!data.account || !data.password)
+    return uni.utils.toast('账号密码没有参数')
+
   return axios.post('/driver/login/account', data)
 }
 // 获取验证码
@@ -10,4 +14,10 @@ export const getCaptcha = () => {
 // 注册账号
 export const registerAccount = (data) => {
   return axios.post('/driver/register/account', data)
+}
+
+// 获取个人信息
+
+export const getUserInfo = () => {
+  return axios.get('/driver/users')
 }

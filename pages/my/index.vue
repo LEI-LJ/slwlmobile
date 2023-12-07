@@ -1,4 +1,10 @@
-<script setup></script>
+<script setup>
+  import { getUserInfo } from '@/apis/user.js'
+
+  getUserInfo().then((res) => {
+    console.log(res)
+  })
+</script>
 
 <template>
   <view class="page-container">

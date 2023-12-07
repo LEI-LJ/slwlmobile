@@ -2,13 +2,12 @@
   "condition": {
     "current": 0,
     "list": [{
+        "name": "登录",
+        "path": "pages/login/index"
+      }, {
         "name": "任务",
         "path": "pages/task/index",
         "query": ""
-      },
-      {
-        "name": "登录",
-        "path": "pages/login/index"
       },
       {
         "name": "我的",
@@ -80,7 +79,12 @@
       }
     ]
   },
-  "pages": [
+  "pages": [{
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
       "path": "pages/task/index",
@@ -89,12 +93,7 @@
         "navigationStyle": "custom"
       }
     },
-    {
-      "path": "pages/login/index",
-      "style": {
-        "navigationBarBackgroundColor": "#ffffff"
-      }
-    },
+
     {
       "path": "pages/my/index",
       "style": {
