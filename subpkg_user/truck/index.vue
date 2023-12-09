@@ -1,4 +1,19 @@
-<script setup></script>
+<script setup>
+  import { ref } from 'vue'
+  import { onLoad } from '@dcloudio/uni-app'
+  import { UserTruckInfo } from '@/apis/user.js'
+  const truchInfo = ref({})
+  
+  onLoad(async () => {
+    // debugger
+    const res = await UserTruckInfo()
+    truchInfo.value = res.data
+  })
+  
+</script>
+
+
+
 
 <template>
   <view class="page-container">

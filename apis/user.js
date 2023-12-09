@@ -21,3 +21,13 @@ export const registerAccount = (data) => {
 export const getUserInfo = () => {
   return axios.get('/driver/users')
 }
+
+// 车辆信息
+export const UserTruckInfo = () => {
+  return axios.get('/driver/users/truck')
+}
+
+// 任务数据
+export const getTaskReport = (data) => {
+  return axios.get('/driver/users/taskReport', data)
+}

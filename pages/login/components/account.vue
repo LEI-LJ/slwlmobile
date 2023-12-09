@@ -71,11 +71,14 @@
 
   // 调转到 token失效界面
   const redirectUrl = ref('')
+  let type = ''
   onLoad((options) => {
     redirectUrl.value = options.redirectUrl
-    console.log(options.redirectUrl);
+
+    type = options.type
+    console.log('----redirectUrl,type----', options.redirectUrl, options.type)
   })
-  console.log(redirectUrl.value)
+
   const loginBtn = async () => {
     // 校验成功正常 返回 校验失败 抛出异常
 
@@ -86,9 +89,9 @@
       // loginBtn(res)
       // console.log(res.data)
       token.value = res.data
-      console.log(redirectUrl.value);
+      console.log(redirectUrl.value)
       if (redirectUrl.value) {
-        uni.switchTab({
+        uni[type]({
           url: redirectUrl.value,
         })
       } else {

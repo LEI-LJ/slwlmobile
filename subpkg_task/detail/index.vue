@@ -1,16 +1,33 @@
 <script setup>
   import { onLoad } from '@dcloudio/uni-app'
 
-  // 获取地址参数
+  import { TaskDetail } from '@/apis/task.js'
+  import { ref } from 'vue'
+  const taskDetailData = ref({})
+  let parameId = ref('')
+  const getDetail = async () => {
+    // 任务详情数据
+    const res = await TaskDetail(parameId.value)
+    console.log(res)
+    taskDetailData.value = res.data
+  }
+
   onLoad((params) => {
-    console.log(params.id)
+    parameId.value = params.id
+    getDetail()
   })
 </script>
 
 <template>
   <view class="page-container">
     <view class="search-bar">
+      <!-- #ifdef H5 -->
+       <text class="iconfont icon-search"></text>
+      <!-- #endif -->
+      <!-- #ifdef MP -->
       <text class="iconfont icon-scan"></text>
+      <!-- #endif -->
+      
       <input class="input" type="text" placeholder="输入运单号" />
     </view>
     <scroll-view scroll-y class="task-detail">
@@ -18,10 +35,8 @@
         <view class="basic-info panel">
           <view class="panel-title">基本信息</view>
           <view class="timeline">
-            <view class="line"
-              >北京市昌平区回龙观街道西三旗桥东金燕龙写字楼8877号</view
-            >
-            <view class="line">河南省郑州市路北区北清路99号</view>
+            <view class="line">{{ taskDetailData.startAddress }}8877号</view>
+            <view class="line">{{ taskDetailData.endAddress }}</view>
             <navigator
               hover-class="none"
               url="/subpkg_task/guide/index"
@@ -34,42 +49,48 @@
           <view class="info-list">
             <view class="info-list-item">
               <text class="label">任务编号</text>
-              <text class="value">1557211886558850</text>
+              <text class="value">{{ parameId }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">提货联系人</text>
-              <text class="value">张三</text>
+              <text class="value">{{ taskDetailData.startHandoverName }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">联系电话</text>
-              <text class="value">13212345678</text>
+              <text class="value">{{ taskDetailData.startHandoverPhone }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">预计提货时间</text>
-              <text class="value">2022.05.04 13:00</text>
+              <text class="value">{{ taskDetailData.planDepartureTime }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">实际提货时间</text>
-              <text class="value">2022.05.04 13:00</text>
+              <text class="value">{{ taskDetailData.planArrivalTime }}</text>
             </view>
 
             <view class="hr"></view>
 
             <view class="info-list-item">
               <text class="label">交付联系人</text>
-              <text class="value">李四</text>
+              <text class="value">{{ taskDetailData.finishHandoverName }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">联系电话</text>
-              <text class="value">13212345678</text>
+              <text class="value">{{
+                taskDetailData.finishHandoverPhone
+              }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">预计送达时间</text>
-              <text class="value">2022.05.05 10:00</text>
+              <text class="value">{{
+                taskDetailData.actualDepartureTime || '(#`O′)'
+              }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">实际送达时间</text>
-              <text class="value">2022.05.05 10:00</text>
+              <text class="value">{{
+                taskDetailData.actualArrivalTime || '(#`O′)'
+              }}</text>
             </view>
           </view>
         </view>
@@ -142,6 +163,7 @@
           </view>
         </view>
       </view>
+      
     </scroll-view>
 
     <view class="toolbar" v-if="true">

@@ -3,7 +3,11 @@
 <template>
   <view class="page-container">
     <uni-list :border="false">
-      <uni-list-item title="原定时间 " showArrow rightText="2022-05-04 13:00:00" />
+      <uni-list-item
+        title="原定时间 "
+        showArrow
+        rightText="2022-05-04 13:00:00"
+      />
       <uni-list-item title="延迟时间" showArrow>
         <template v-slot:footer>
           <picker class="time-picker" mode="time">

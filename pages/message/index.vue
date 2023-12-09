@@ -21,6 +21,7 @@
     tabMetas[index].rendered = true
     tabIndex.value = index
   }
+  // const o
 </script>
 
 <template>

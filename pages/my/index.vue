@@ -1,18 +1,21 @@
 <script setup>
+  import { onLoad } from '@dcloudio/uni-app'
   import { getUserInfo } from '@/apis/user.js'
-
-  getUserInfo().then((res) => {
-    console.log(res)
+  import {  ref } from 'vue'
+  const userinfo = ref({})
+  onLoad(async () => {
+    const res = await getUserInfo()
+    userinfo.value = res.data                
   })
 </script>
 
 <template>
   <view class="page-container">
     <view class="user-profile">
-      <image class="avatar" src="/static/images/avatar_2.png" mode=""></image>
-      <text class="username">李明</text>
-      <text class="no">司机编号：67409881</text>
-      <text class="mobile">手机号码：177 9998 8765</text>
+      <image class="avatar" :src="userinfo.avatar || '/static/images/avatar_2.png'" mode=""></image>
+      <text class="username">{{userinfo.name}}</text>
+      <text class="no">司机编号：{{userinfo.number}}</text>
+      <text class="mobile">手机号码：{{userinfo.phone}}</text>
     </view>
     <view class="month-overview">
       <view class="title">我的任务</view>

@@ -1,10 +1,25 @@
 <script setup>
+  import { ref } from 'vue'
   import slUniCalendar from './components/sl-uni-calendar/sl-uni-calendar'
+  const date = ref({})
+  const startDate = (e) => {
+    console.log(e)
+    date.value = {
+      year: e.year,
+      month: e.month,
+    }
+  }
+  // console.log(startDate)
 </script>
 
 <template>
   <view class="page-container">
-    <sl-uni-calendar :show-month="false">
+    <sl-uni-calendar
+      :show-month="false"
+      @confirm="startDate"
+      @change="startDate"
+      @monthSwith="startDate"
+    >
       <view class="data-overview">
         <view class="item">
           <text class="volumn">18</text>
