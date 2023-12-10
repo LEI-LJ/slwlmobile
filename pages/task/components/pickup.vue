@@ -1,14 +1,32 @@
 <script setup>
+  import useScrollPage from '@/hooks/scrollPage.js'
+
+  // console.log(useScrollPage.scrollTop)
   import { getTaskList } from '@/apis/task.js'
   import { onLoad } from '@dcloudio/uni-app'
-  import { ref } from 'vue'
+  import { onMounted, ref, watch } from 'vue'
   const TaskList = ref([])
+  const scrollView = ref()
+  onMounted(() => {
+    const { isReachBottom, clientHeight, scrollTop, scrollHeight } =
+      useScrollPage(scrollView)
+    watch(
+      [isReachBottom, clientHeight, scrollTop, scrollHeight],
+      (newVal) => {
+        console.log(newVal)
+      },
+      { deep: true, immediate: true }
+    )
+  })
+
+  // console.log(scrollTop)
   // 当前页
   let currentPage = 1
   // 记录总页数
   let allPages = 1
   // 下拉刷新的开关
   const triggers = ref(false)
+
   const getList = async () => {
     const res = await getTaskList(1, currentPage)
     console.log(res)
@@ -36,6 +54,7 @@
 
 <template>
   <scroll-view
+    ref="scrollView"
     @scrolltolower="onLower"
     @refresherrefresh="onRefresher"
     :refresher-triggered="triggers"

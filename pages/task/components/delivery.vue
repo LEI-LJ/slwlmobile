@@ -1,4 +1,14 @@
-<script></script>
+<script setup>
+  import { onLoad } from '@dcloudio/uni-app'
+  import { getTaskList } from '@/apis/task'
+  const getData = async () => {
+    const res = await getTaskList(6)
+    console.log(res);
+  }
+  onLoad(() => {
+    getData()
+  })
+</script>
 <template>
   <scroll-view scroll-y refresher-enabled class="scroll-view">
     <view class="scroll-view-wrapper">

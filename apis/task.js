@@ -14,3 +14,9 @@ export const getTaskList = (status, page = 1, pageSize = 10) => {
 export const TaskDetail = (id) => {
   return axios.get(`/driver/tasks/details/${id}`)
 }
+
+// 延迟收货
+
+export const delayReasonModify = (data) => {
+  return axios.put('/driver/tasks/delay', data)
+}

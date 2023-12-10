@@ -168,7 +168,7 @@
 
     <view class="toolbar" v-if="true">
       <navigator
-        url="/subpkg_task/delay/index"
+        :url="`/subpkg_task/delay/index?id=${taskDetailData.id}&planeTime=${taskDetailData.planDepartureTime}`"
         hover-class="none"
         class="button secondary"
         >延迟提货</navigator
