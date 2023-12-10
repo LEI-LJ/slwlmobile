@@ -1,5 +1,5 @@
 <script setup>
-  import { onLoad } from '@dcloudio/uni-app'
+  import { onLoad, onShow } from '@dcloudio/uni-app'
 
   import { TaskDetail } from '@/apis/task.js'
   import { ref } from 'vue'
@@ -14,6 +14,8 @@
 
   onLoad((params) => {
     parameId.value = params.id
+  })
+  onShow(() => {
     getDetail()
   })
 </script>
@@ -22,12 +24,12 @@
   <view class="page-container">
     <view class="search-bar">
       <!-- #ifdef H5 -->
-       <text class="iconfont icon-search"></text>
+      <text class="iconfont icon-search"></text>
       <!-- #endif -->
       <!-- #ifdef MP -->
       <text class="iconfont icon-scan"></text>
       <!-- #endif -->
-      
+
       <input class="input" type="text" placeholder="输入运单号" />
     </view>
     <scroll-view scroll-y class="task-detail">
@@ -83,13 +85,13 @@
             <view class="info-list-item">
               <text class="label">预计送达时间</text>
               <text class="value">{{
-                taskDetailData.actualDepartureTime || '(#`O′)'
+                taskDetailData.planArrivalTime || '(#`O′)'
               }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">实际送达时间</text>
               <text class="value">{{
-                taskDetailData.actualArrivalTime || '(#`O′)'
+                taskDetailData.actualDepartureTime || '(#`O′)'
               }}</text>
             </view>
           </view>
@@ -131,17 +133,39 @@
           <view class="panel-title">提货信息</view>
           <view class="label">提货凭证</view>
           <view class="pictures">
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <view v-if="false" class="picture-blank">暂无图片</view>
+            <image
+              v-for="item in taskDetailData.cargoPickUpPictureList"
+              class="picture"
+              :src="item.url"
+              mode="aspectFill"
+            ></image>
+            <view
+              v-if="
+                taskDetailData.cargoPickUpPictureList?.length <= 0 ||
+                !taskDetailData.cargoPickUpPictureList
+              "
+              class="picture-blank"
+              >暂无图片</view
+            >
           </view>
           <view class="label">货品照片</view>
           <view class="pictures">
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <view v-if="false" class="picture-blank">暂无图片</view>
+            <image
+              v-for="item in taskDetailData.cargoPictureList"
+              class="picture"
+              :src="item.url"
+              mode="aspectFill"
+            ></image>
+            <!-- <image class="picture" src="" mode=""></image>
+            <image class="picture" src="" mode=""></image> -->
+            <view
+              v-if="
+                taskDetailData.cargoPickUpPictureList?.length <= 0 ||
+                !taskDetailData.cargoPickUpPictureList
+              "
+              class="picture-blank"
+              >暂无图片</view
+            >
           </view>
         </view>
 
@@ -163,10 +187,9 @@
           </view>
         </view>
       </view>
-      
     </scroll-view>
 
-    <view class="toolbar" v-if="true">
+    <view class="toolbar" v-if="taskDetailData.status === 1">
       <navigator
         :url="`/subpkg_task/delay/index?id=${taskDetailData.id}&planeTime=${taskDetailData.planDepartureTime}`"
         hover-class="none"
@@ -174,13 +197,13 @@
         >延迟提货</navigator
       >
       <navigator
-        url="/subpkg_task/pickup/index"
+        :url="`/subpkg_task/pickup/index?id=${taskDetailData.id}`"
         hover-class="none"
         class="button primary"
         >提货</navigator
       >
     </view>
-    <view class="toolbar" v-if="false">
+    <view class="toolbar" v-if="taskDetailData.status === 2">
       <navigator
         url="/subpkg_task/except/index"
         hover-class="none"

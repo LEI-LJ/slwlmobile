@@ -63,8 +63,8 @@
     },
   }
   const formData = ref({
-    account: 'luolei',
-    password: '121212',
+    account: 'kobeaa',
+    password: '123456',
   })
   const formRef = ref(null)
   // 触发校验

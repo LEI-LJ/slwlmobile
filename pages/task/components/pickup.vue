@@ -1,23 +1,9 @@
 <script setup>
-  import useScrollPage from '@/hooks/scrollPage.js'
-
   // console.log(useScrollPage.scrollTop)
   import { getTaskList } from '@/apis/task.js'
   import { onLoad } from '@dcloudio/uni-app'
-  import { onMounted, ref, watch } from 'vue'
+  import { ref } from 'vue'
   const TaskList = ref([])
-  const scrollView = ref()
-  onMounted(() => {
-    const { isReachBottom, clientHeight, scrollTop, scrollHeight } =
-      useScrollPage(scrollView)
-    watch(
-      [isReachBottom, clientHeight, scrollTop, scrollHeight],
-      (newVal) => {
-        console.log(newVal)
-      },
-      { deep: true, immediate: true }
-    )
-  })
 
   // console.log(scrollTop)
   // 当前页
@@ -42,7 +28,6 @@
     currentPage++
     getList()
   }
-  //
   const onRefresher = async () => {
     triggers.value = true
     TaskList.value = []
@@ -50,11 +35,22 @@
     await getList()
     triggers.value = false
   }
-</script>
+  // 跳转到详情
 
+  const navigatToDetail = (item) => {
+    if (!item.enablePickUp) return uni.utils.toast('已提货,请专心开车!')
+    uni.navigateTo({
+      url: `/subpkg_task/detail/index?id=${item.id}`,
+    })
+  }
+</script>
+<script>
+  export default {
+    name: 'pickup',
+  }
+</script>
 <template>
   <scroll-view
-    ref="scrollView"
     @scrolltolower="onLower"
     @refresherrefresh="onRefresher"
     :refresher-triggered="triggers"
@@ -64,21 +60,18 @@
   >
     <view class="scroll-view-wrapper">
       <view v-for="item in TaskList" :key="item.id" class="task-card">
-        <navigator
-          hover-class="none"
-          :url="`/subpkg_task/detail/index?id=${item.id}`"
-        >
+        <a @click="navigatToDetail(item)" hover-class="none">
           <view class="header">
             <text class="no">任务编号: {{ item.transportTaskId }}</text>
-            <text class="status">已延迟</text>
+            <!-- <text class="status">已延迟</text> -->
           </view>
           <view class="body">
             <view class="timeline">
               <view class="line">{{ item.startAddress }}</view>
-              <view class="line">{{ item.endAddress }}99号</view>
+              <view class="line">{{ item.endAddress }}</view>
             </view>
           </view>
-        </navigator>
+        </a>
         <view class="footer">
           <view class="label">提货时间</view>
           <view class="time">{{ item.planArrivalTime }}</view>

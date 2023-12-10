@@ -20,3 +20,9 @@ export const TaskDetail = (id) => {
 export const delayReasonModify = (data) => {
   return axios.put('/driver/tasks/delay', data)
 }
+
+// 提货
+
+export const takeDelivery = (data) => {
+  return axios.post('/driver/tasks/takeDelivery', data)
+}
