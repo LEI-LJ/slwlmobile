@@ -26,3 +26,9 @@ export const delayReasonModify = (data) => {
 export const takeDelivery = (data) => {
   return axios.post('/driver/tasks/takeDelivery', data)
 }
+
+// 上报异常
+
+export const reportException = (data) => {
+  return axios.post('/driver/tasks/reportException', data)
+}

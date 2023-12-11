@@ -97,9 +97,23 @@
           </view>
         </view>
 
-        <view class="except-info panel">
+        <view class="except-info panel" >
           <view class="panel-title">异常信息</view>
-          <view class="info-list">
+          <view class="info-list" v-for="item in taskDetailData.exceptionList">
+            <view class="info-list-item">
+              <text class="label">上报时间</text>
+              <text class="value">{{item.exceptionTime}}</text>
+            </view>
+            <view class="info-list-item">
+              <text class="label">异常类型</text>
+              <text class="value">{{item.exceptionType}}</text>
+            </view>
+            <view class="info-list-item">
+              <text class="label">处理结果</text>
+              <text class="value">{{item.handleResult}}</text>
+            </view>
+          </view>
+         <!-- <view class="info-list">
             <view class="info-list-item">
               <text class="label">上报时间</text>
               <text class="value">2022.05.04 13:00</text>
@@ -112,21 +126,7 @@
               <text class="label">处理结果</text>
               <text class="value">继续运输</text>
             </view>
-          </view>
-          <view class="info-list">
-            <view class="info-list-item">
-              <text class="label">上报时间</text>
-              <text class="value">2022.05.04 13:00</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">异常类型</text>
-              <text class="value">有异常响动</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">处理结果</text>
-              <text class="value">继续运输</text>
-            </view>
-          </view>
+          </view> -->
         </view>
 
         <view class="panel pickup-info">
@@ -205,7 +205,7 @@
     </view>
     <view class="toolbar" v-if="taskDetailData.status === 2">
       <navigator
-        url="/subpkg_task/except/index"
+        :url="`/subpkg_task/except/index?id=${taskDetailData.transportTaskId}`"
         hover-class="none"
         class="button secondary"
         >异常上报

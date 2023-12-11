@@ -43,6 +43,22 @@
       url: `/subpkg_task/detail/index?id=${item.id}`,
     })
   }
+
+  const _debounce = (fn, time) => {
+    let timeId = null
+    console.log('----_debounce----')
+    return (e) => {
+      if (timeId) {
+        clearTimeout(timeId)
+      }
+      timeId = setTimeout(() => {
+        fn(e)
+      }, time)
+    }
+  }
+  const moveEvent = _debounce((e) => {
+    console.log(e)
+  }, 1000)
 </script>
 <script>
   export default {
@@ -51,6 +67,7 @@
 </script>
 <template>
   <scroll-view
+    @touchmove="moveEvent"
     @scrolltolower="onLower"
     @refresherrefresh="onRefresher"
     :refresher-triggered="triggers"

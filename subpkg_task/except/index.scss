@@ -73,7 +73,9 @@
       background-color: #fadcd9;
     }
   }
-
+  .disabled {
+    background-color: #fadcd9 !important;
+  }
   .popup-action-sheet {
     margin-bottom: 0;
     border-radius: 32rpx 32rpx 0 0;
