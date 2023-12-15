@@ -32,3 +32,9 @@ export const takeDelivery = (data) => {
 export const reportException = (data) => {
   return axios.post('/driver/tasks/reportException', data)
 }
+// 交付
+export const deliver = (data) => {
+  return axios.post('/driver/tasks/deliver', data)
+}
+// 回车登记
+export const truckRegistration = (data)=> axios.post('/driver/tasks/truckRegistration',data)

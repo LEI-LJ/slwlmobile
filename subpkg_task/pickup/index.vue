@@ -6,7 +6,7 @@
   const cargoPictureList = ref([])
   const id = ref('')
   const submit = async () => {
-   await takeDelivery({
+    await takeDelivery({
       id: id.value,
       cargoPickUpPictureList: cargoPickUpPictureList.value.map((item) => {
         return { url: item.url }
@@ -25,13 +25,11 @@
     )
   })
   onLoad((options) => {
-    console.log(options)
+    // console.log(options)
     id.value = options.id
   })
 </script>
-<script>
-
-</script>
+<script></script>
 <template>
   <view class="page-container">
     <view class="receipt-info">

@@ -1,32 +1,3 @@
-<template>
-  <uni-forms
-    class="login-form"
-    ref="formRef"
-    :rules="formRules"
-    :model="formData"
-  >
-    <uni-forms-item name="account">
-      <input
-        v-model="formData.account"
-        type="text"
-        placeholder="请输入账号"
-        class="uni-input-input"
-        placeholder-style="color: #818181"
-      />
-    </uni-forms-item>
-    <uni-forms-item name="password">
-      <input
-        v-model="formData.password"
-        type="text"
-        placeholder="请输入密码"
-        class="uni-input-input"
-        placeholder-style="color: #818181"
-      />
-    </uni-forms-item>
-    <button class="submit-button" @click="loginBtn">登录</button>
-  </uni-forms>
-</template>
-
 <script setup>
   import { useUserStore } from '@/store/user.js'
   import { storeToRefs } from 'pinia'
@@ -105,6 +76,35 @@
     }
   }
 </script>
+
+<template>
+  <uni-forms
+    class="login-form"
+    ref="formRef"
+    :rules="formRules"
+    :model="formData"
+  >
+    <uni-forms-item name="account">
+      <input
+        v-model="formData.account"
+        type="text"
+        placeholder="请输入账号"
+        class="uni-input-input"
+        placeholder-style="color: #818181"
+      />
+    </uni-forms-item>
+    <uni-forms-item name="password">
+      <input
+        v-model="formData.password"
+        type="text"
+        placeholder="请输入密码"
+        class="uni-input-input"
+        placeholder-style="color: #818181"
+      />
+    </uni-forms-item>
+    <button class="submit-button" @click="loginBtn">登录</button>
+  </uni-forms>
+</template>
 
 <style lang="scss" scoped>
   @import './styles.scss';

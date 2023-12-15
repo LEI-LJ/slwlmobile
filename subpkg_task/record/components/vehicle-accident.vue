@@ -1,4 +1,5 @@
 <script setup>
+  import { useTaskStore } from '@/store/task.js'
   import { ref } from 'vue'
   import vehicleOptions from './vehicle-options'
 
@@ -20,7 +21,8 @@
 
   function onRadioChange(ev) {
     // 展开详细的选项
-    show.value = ev.detail.value
+    show.value = !!+ev.detail.value
+    useTaskStore().recordData.isAccident = !!+ev.detail.value
   }
 </script>
 
@@ -43,10 +45,11 @@
       <uni-list>
         <uni-list-item direction="column" :border="false" title="事故类型">
           <template v-slot:footer>
-            <vehicle-options :types="types" />
+            <vehicle-options Itemkey="accidentType" :types="types" />
             <view class="textarea-wrapper">
               <textarea
                 class="textarea"
+                v-model="useTaskStore().recordData.accidentDescription"
                 placeholder="请输入事故描述"
               ></textarea>
               <view class="words-count">0/50</view>
@@ -59,7 +62,10 @@
           title="请上传现场照片"
         >
           <template v-slot:footer>
-            <uni-file-picker limit="6"></uni-file-picker>
+            <uni-file-picker
+              v-model="useTaskStore().recordData.accidentImagesList"
+              limit="6"
+            ></uni-file-picker>
           </template>
         </uni-list-item>
       </uni-list>

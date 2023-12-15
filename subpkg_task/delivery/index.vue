@@ -1,14 +1,55 @@
 <template>
   <view class="page-container">
     <view class="receipt-info">
-      <uni-file-picker limit="3" title="请拍照上传回单凭证"></uni-file-picker>
-      <uni-file-picker limit="3" title="请拍照上传货品照片"></uni-file-picker>
+      <uni-file-picker
+        v-model="certificatePictureList"
+        limit="3"
+        title="请拍照上传回单凭证"
+      ></uni-file-picker>
+      <uni-file-picker
+        v-model="deliverPictureList"
+        limit="3"
+        title="请拍照上传货品照片"
+      ></uni-file-picker>
     </view>
-    <button disabled class="button">提交</button>
+    <button :disabled="!isOk" class="button" @click="submit">提交</button>
   </view>
 </template>
 
-<script></script>
+<script setup>
+  import { onLoad } from '@dcloudio/uni-app'
+  import { ref, computed } from 'vue'
+  import { deliver } from '@/apis/task.js'
+  const id = ref('')
+  const deliverPictureList = ref([])
+  const certificatePictureList = ref([])
+  const isOk = computed(() => {
+    return (
+      deliverPictureList.value.length > 0 &&
+      certificatePictureList.value.length > 0
+    )
+  })
+  onLoad((options) => {
+    id.value = options.id
+  })
+  const submit = async () => {
+    const res = await deliver({
+      id: id.value,
+      deliverPictureList: deliverPictureList.value.map((item) => ({
+        url: item.url,
+      })),
+      certificatePictureList: certificatePictureList.value.map((item) => ({
+        url: item.url,
+      })),
+    })
+    if (res.code === 200) {
+      uni.utils.toast('交付成功')
+      uni.navigateBack()
+    } else {
+      uni.utils.toast('出现错误')
+    }
+  }
+</script>
 
 <style lang="scss" scoped>
   .page-container {

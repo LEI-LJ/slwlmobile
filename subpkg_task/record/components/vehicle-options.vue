@@ -1,29 +1,38 @@
 <script setup>
+  import { useTaskStore } from '@/store/task.js'
+  const { recordData } = storeToRefs(useTaskStore())
   import { ref } from 'vue'
-
+  import { storeToRefs } from 'pinia'
   // 当前被选中选项的索引值
   const tabIndex = ref(-1)
-
+  const options = ref({})
   // 接收传入组件的数据
   const props = defineProps({
     types: Array,
+    Itemkey: String,
   })
-
+  const emit = defineEmits(['selectType', 'selectValue'])
   // 点击选中选项
-  function onOptionSelect(index) {
+  function onOptionSelect(index, option) {
     // 高亮显示选中的选项
     tabIndex.value = index
+    options.value = option
+    emit('selectType', tabIndex)
+    emit('selectValue', { val: options.value, key: props.Itemkey })
+    // console.log(options.value)
+    recordData.value[props.Itemkey] = options.value.id
   }
 </script>
 
 <template>
   <view class="vehicle-options">
+    <!-- class也改了 -->
     <view
       class="option"
       :class="{ active: tabIndex === index }"
       v-for="(option, index) in props.types"
       :key="option.id"
-      @click="onOptionSelect(index)"
+      @click="onOptionSelect(index, option)"
     >
       {{ option.text }}
     </view>

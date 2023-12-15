@@ -1,4 +1,6 @@
 <script setup>
+  import { useTaskStore } from '@/store/task.js'
+  const taskStore = useTaskStore()
   import { ref } from 'vue'
   import vehicleOptions from './vehicle-options'
 
@@ -19,8 +21,10 @@
 
   function onRadioChange(ev) {
     // 展开详细的选项
-    show.value = ev.detail.value
+    show.value = !!+ev.detail.value
+    taskStore.recordData.isFault = !!+ev.detail.value
   }
+  
 </script>
 
 <template>
@@ -42,10 +46,11 @@
       <uni-list>
         <uni-list-item direction="column" :border="false" title="故障类型">
           <template v-slot:footer>
-            <vehicle-options :types="types" />
+            <vehicle-options Itemkey="faultType" :types="types" />
             <view class="textarea-wrapper">
               <textarea
                 class="textarea"
+                v-model="taskStore.recordData.faultDescription"
                 placeholder="请输入故障描述"
               ></textarea>
               <view class="words-count">0/50</view>
@@ -58,7 +63,10 @@
           title="请上传现场照片"
         >
           <template v-slot:footer>
-            <uni-file-picker limit="6"></uni-file-picker>
+            <uni-file-picker
+              v-model="taskStore.recordData.faultImagesList"
+              limit="6"
+            ></uni-file-picker>
           </template>
         </uni-list-item>
       </uni-list>

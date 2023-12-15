@@ -1,7 +1,7 @@
 <script setup>
-  import { ref } from 'vue'
+  import { ref, watch } from 'vue'
   import vehicleOptions from './vehicle-options'
-
+  import { useTaskStore } from '@/store/task.js'
   // 是不显示详细的选项
   const show = ref(false)
   // 构造数据
@@ -50,7 +50,11 @@
   function onRadioChange(ev) {
     // 展开详细的选项
     show.value = !!parseInt(ev.detail.value)
+    useTaskStore().recordData.isBreakRules = !!parseInt(ev.detail.value)
   }
+  watch(()=> {
+    
+  })
 </script>
 
 <template>
@@ -71,13 +75,31 @@
     <view v-show="show" class="vehicle-panel-body">
       <uni-list>
         <uni-list-item
-          v-for="item in initialData"
+          v-for="(item, index) in initialData"
+          :key="index"
           direction="column"
           :border="false"
           :title="item.title"
         >
           <template v-slot:footer>
-            <vehicle-options :types="item.types" />
+            <vehicle-options :Itemkey="item.key" :types="item.types" />
+          </template>
+        </uni-list-item>
+        <uni-list-item
+          title="违章描述"
+          direction="column"
+          :border="false"
+          v-if="useTaskStore().recordData.breakRulesType === 6"
+        >
+          <template v-slot:footer>
+            <view class="textarea-wrapper">
+              <textarea
+                class="textarea"
+                v-model="useTaskStore().recordData.breakRulesDescription"
+                placeholder="请输入违章描述"
+              ></textarea>
+              <view class="words-count">0/50</view>
+            </view>
           </template>
         </uni-list-item>
       </uni-list>
@@ -88,4 +110,26 @@
 <style lang="scss" scoped>
   @import './styles/vehicle-panel.scss';
   @import './styles/vehicle-violation.scss';
+  .textarea-wrapper {
+    position: relative;
+    padding-top: 28rpx;
+  }
+  .textarea {
+    width: 100%;
+    height: 260rpx;
+    font-size: $uni-font-size-base;
+    padding: 20rpx 28rpx;
+    background-color: #f4f4f4;
+    border-radius: 16rpx;
+    box-sizing: border-box;
+    color: $uni-main-color;
+  }
+
+  .words-count {
+    position: absolute;
+    bottom: 10rpx;
+    right: 30rpx;
+    color: $uni-secondary-color;
+    font-size: $uni-font-size-small;
+  }
 </style>

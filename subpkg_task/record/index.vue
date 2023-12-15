@@ -1,11 +1,29 @@
 <script setup>
-  import { ref } from 'vue'
+  import { useTaskStore } from '@/store/task.js'
+  import { computed, ref } from 'vue'
+  import { onLoad } from '@dcloudio/uni-app'
   import slVehicleViolation from './components/vehicle-violation'
   import slVehicleBreakdown from './components/vehicle-breakdown'
   import slVehicleAccident from './components/vehicle-accident'
-
+  
+  import { storeToRefs } from 'pinia'
+  const { recordData } = storeToRefs(useTaskStore())
+  const { submit } = useTaskStore()
   // 回车时间
-  const dataTimePicker = ref('')
+  // const dataTimePicker = ref('')
+  onLoad((options) => {
+    recordData.value.startTime = options.startTime
+    recordData.value.id = options.id
+  })
+  // recordData.value.endTime = dataTimePicker.value
+
+  const isOk = computed(() => {
+    return (
+      recordData.value.endTime.length > 0 &&
+      recordData.value.startTime.length > 0
+    )
+  })
+  console.log(submit)
 </script>
 <template>
   <view class="page-container">
@@ -15,13 +33,13 @@
           <uni-list-item
             title="出车时间"
             show-arrow
-            right-text="2022-05-04 13:00:00"
+            :right-text="recordData.startTime"
           />
           <uni-list-item show-arrow title="回车时间">
             <template v-slot:footer>
-              <uni-datetime-picker v-model="dataTimePicker">
+              <uni-datetime-picker v-model="recordData.endTime">
                 <view class="picker-value">{{
-                  dataTimePicker || '请选择'
+                  recordData.endTime || '请选择'
                 }}</view>
               </uni-datetime-picker>
             </template>
@@ -33,7 +51,7 @@
       </view>
     </scroll-view>
     <view class="toolbar">
-      <button class="button">提交登记</button>
+      <button :disabled="!isOk" @click="submit" class="button">提交登记</button>
     </view>
   </view>
 </template>

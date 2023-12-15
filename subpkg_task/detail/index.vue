@@ -99,7 +99,7 @@
 
         <view class="except-info panel" >
           <view class="panel-title">异常信息</view>
-          <view class="info-list" v-for="item in taskDetailData.exceptionList">
+          <view class="info-list" v-for="(item,index) in taskDetailData.exceptionList" :key="index"> 
             <view class="info-list-item">
               <text class="label">上报时间</text>
               <text class="value">{{item.exceptionTime}}</text>
@@ -134,7 +134,8 @@
           <view class="label">提货凭证</view>
           <view class="pictures">
             <image
-              v-for="item in taskDetailData.cargoPickUpPictureList"
+              v-for="(item,index) in taskDetailData.cargoPickUpPictureList"
+              :key="index"
               class="picture"
               :src="item.url"
               mode="aspectFill"

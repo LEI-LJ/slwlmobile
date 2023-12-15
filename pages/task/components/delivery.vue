@@ -1,8 +1,8 @@
 <script setup>
   // console.log(useScrollPage.scrollTop)
   import { getTaskList } from '@/apis/task.js'
-  import { onLoad } from '@dcloudio/uni-app'
-  import { ref } from 'vue'
+  import { onLoad, onShow } from '@dcloudio/uni-app'
+  import { computed, ref } from 'vue'
   const TaskList = ref([])
 
   // console.log(scrollTop)
@@ -19,7 +19,7 @@
     TaskList.value = [...TaskList.value, ...res.data.items]
     allPages = +res.data.pages
   }
-  onLoad(() => {
+  onShow(() => {
     getList()
   })
   // const statusText = computed(() => {})
@@ -28,6 +28,9 @@
     currentPage++
     getList()
   }
+  // const compete = computed(()=>{
+  //   retu
+  // })
   const onRefresher = async () => {
     triggers.value = true
     TaskList.value = []
@@ -47,7 +50,10 @@
   >
     <view class="scroll-view-wrapper">
       <view v-for="item in TaskList" :key="item.id" class="task-card">
-        <navigator hover-class="none" :url="`/subpkg_task/detail/index?id=${item.id}`">
+        <navigator
+          hover-class="none"
+          :url="`/subpkg_task/detail/index?id=${item.id}`"
+        >
           <view class="header">
             <text class="no">任务编号:{{ item.transportTaskId }}</text>
           </view>
@@ -62,6 +68,14 @@
           <view class="label">提货时间</view>
           <view class="time">{{ item.actualDepartureTime }}</view>
           <navigator
+            v-if="item.status === 4"
+            hover-class="none"
+            :url="`/subpkg_task/record/index?id=${item.transportTaskId}&startTime=${item.actualDepartureTime}`"
+            class="action"
+            >回车登记</navigator
+          >
+          <navigator
+            v-else
             hover-class="none"
             :url="`/subpkg_task/delivery/index?id=${item.id}`"
             class="action"
@@ -95,7 +109,7 @@
           >
         </view>
       </view> -->
-      <view v-if="false" class="task-blank">无在途货物</view>
+      <view v-if="TaskList.length <= 0" class="task-blank">无在途货物</view>
     </view>
   </scroll-view>
 </template>

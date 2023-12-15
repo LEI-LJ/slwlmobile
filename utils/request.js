@@ -1,6 +1,6 @@
 import { createUniFetch } from 'uni-app-fetch'
 import { useUserStore } from '@/store/user.js'
-const userStore = useUserStore()
+
 // console.log(token.value)
 // 使用自定义选项创建实例
 export const axios = createUniFetch({
@@ -9,6 +9,7 @@ export const axios = createUniFetch({
   intercept: {
     // 请求拦截器
     request(options) {
+      const userStore = useUserStore()
       const defaultHeader = {}
       if (userStore.token) {
         defaultHeader.Authorization = userStore.token

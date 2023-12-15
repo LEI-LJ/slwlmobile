@@ -1,4 +1,41 @@
-<script></script>
+<script setup>
+  import { getTaskList } from '@/apis/task.js'
+  import { onShow } from '@dcloudio/uni-app'
+  import { ref } from 'vue'
+  const TaskList = ref([])
+
+  // console.log(scrollTop)
+  // 当前页
+  let currentPage = 1
+  // 记录总页数
+  let allPages = 1
+  // 下拉刷新的开关
+  // const triggers = ref(false)
+
+  const getList = async () => {
+    const res = await getTaskList(6, currentPage)
+    console.log(res)
+    TaskList.value = [...TaskList.value, ...res.data.items]
+    allPages = +res.data.pages
+  }
+  onShow(() => {
+    getList()
+  })
+  // const statusText = computed(() => {})
+  // const onLower = () => {
+  //   if (currentPage >= allPages) return uni.utils.toast('已经到底了')
+  //   currentPage++
+  //   getList()
+
+  // }
+  // const onRefresher = async () => {
+  //   triggers.value = true
+  //   TaskList.value = []
+  //   currentPage = 1
+  //   await getList()
+  //   triggers.value = false
+  // }
+</script>
 
 <template>
   <view class="task-search">
@@ -15,7 +52,12 @@
   </view>
   <scroll-view scroll-y refresher-enabled class="scroll-view">
     <view class="scroll-view-wrapper">
-      <view v-if="false" class="task-card">
+      <view
+        v-if="TaskList.length"
+        class="task-card"
+        v-for="(item, index) in TaskList"
+        :key="index"
+      >
         <navigator hover-class="none" url="/subpkg_task/detail/index?id=001">
           <view class="header">
             <text class="no">任务编号: XAHH1234567</text>
@@ -34,7 +76,7 @@
           <view class="time">2022.05.04 13:00</view>
         </view>
       </view>
-      <view class="task-blank">无完成货物</view>
+      <view v-if="TaskList.length <= 0" class="task-blank">无完成货物</view>
     </view>
   </scroll-view>
 </template>

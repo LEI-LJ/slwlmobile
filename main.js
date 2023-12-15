@@ -7,10 +7,12 @@ import { persistedstate } from '@/store/persite.js'
 import { createSSRApp } from 'vue'
 
 export function createApp() {
+  
   const pinia = createPinia()
   const app = createSSRApp(App)
-  pinia.use(persistedstate)
   app.use(pinia)
+  pinia.use(persistedstate)
+
   return {
     app,
   }
